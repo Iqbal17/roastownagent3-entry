@@ -79,7 +79,15 @@ LINE = (
 )
 
 
+# Gate guard: the bounty requires one line of 1-140 characters. Enforce it
+# here so a bad line fails loudly instead of being submitted silently.
+def validate_line(line: str) -> None:
+    if not line or len(line) > 140:
+        raise ValueError("line must be 1-140 characters")
+
+
 def main() -> None:
+    validate_line(LINE)
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
